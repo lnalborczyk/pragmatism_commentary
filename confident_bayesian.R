@@ -2,7 +2,7 @@
 # R code accompanying Nalborczyk, Bürkner, & Williams (2018)
 # OSF projet: ...
 # Contact: ladislas.nalborczyk@gmail.com
-# Last update: September 12, 2018
+# Last update: September 13, 2018
 #############################################################
 
 #####################################################
@@ -32,26 +32,32 @@ for(i in 1:nsims) {
         
     }
     
-    res <- fixef(m)[, 3:4] %>% as.vector
-    lower[i] <- res[1]
-    upper[i] <- res[2]
+    intervals <- fixef(m)[, 3:4] %>% as.vector
+    
+    lower[i] <- intervals[1]
+    upper[i] <- intervals[2]
     
 }
 
 sim <- data.frame(lower = lower, upper = upper, id = 1:length(lower) ) %>%
     mutate(group = ifelse(100 > lower & 100 < upper, 1, 0) )
 
+png(filename = "coverage1.png", width = 1500, height = 1000, res = 200)
+
 sim %>%
-    ggplot(aes(x = id, colour = as.factor(group) ) ) +
+    ggplot(aes(x = id, colour = as.factor(group), size = as.factor(group) ) ) +
     geom_hline(yintercept = 100, lty = 2, alpha = 0.5) +
-    geom_errorbar(aes(ymin = lower, ymax = upper), width = 0, size = 0.25) +
+    geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
     scale_y_continuous(limits = c(80, 120) ) +
     scale_x_continuous(breaks = c(seq(0, nsims, nsims / 10) ) ) +
-    scale_color_discrete(guide = FALSE) +
+    scale_color_manual(values = c("steelblue", "gray80"), guide = FALSE) +
+    scale_size_manual(values = c(0.5, 0.25), guide = FALSE) +
     ylab("Estimate") +
     xlab("Simulation number") +
     theme_minimal(base_size = 12) +
     ggtitle(paste0("Coverage = ", mean(sim$group) ) )
+
+dev.off()
 
 ####################################################################
 # meta-analysis example
@@ -103,6 +109,8 @@ for(i in 1:nsims) {
     
 }
 
+png(filename = "coverage2.png", width = 1500, height = 1000, res = 200)
+
 res %>%
     gather(interval, value) %>%
     separate(col = interval, into = c("interval", "type"), sep = "_", remove = TRUE) %>%
@@ -114,14 +122,27 @@ res %>%
     group_by(type) %>%
     mutate(coverage = mean(group) ) %>%
     # plotting
-    ggplot(aes(x = id, colour = as.factor(group) ) ) +
+    ggplot(aes(x = id, colour = as.factor(group), size = as.factor(group) ) ) +
     geom_hline(yintercept = tau, lty = 2, alpha = 0.5) +
-    geom_errorbar(aes(ymin = lower, ymax = upper), width = 0, size = 0.1) +
-    scale_x_continuous(breaks = c(seq(0, nsims, nsims / 10) ) ) +
-    scale_color_discrete(guide = FALSE) +
+    geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
     scale_y_continuous(limits = c(0, 1) ) +
-    facet_wrap(~type, scales = "free") +
-    geom_label(aes(x = 10, y = 0.5, label = round(coverage, 3) ) ) +
+    scale_x_continuous(breaks = c(seq(0, nsims, nsims / 10) ) ) +
+    scale_color_manual(values = c("steelblue", "gray80"), guide = FALSE) +
+    scale_size_manual(values = c(0.5, 0.25), guide = FALSE) +
+    facet_wrap(
+        ~type, ncol = 1, scales = "free",
+        labeller = as_labeller(c(
+            "freq" = "Frequentist confidence interval",
+            "bayes" = "Bayesian credible interval"
+            ) )
+        ) +
+    # adding coverage proportion
+    geom_label(
+        aes(x = 100, y = 0.75, label = paste0("Coverage = ", round(coverage, 3) ) ),
+        inherit.aes = FALSE
+        ) +
     ylab("Estimate") +
     xlab("Simulation number") +
     theme_minimal(base_size = 12)
+
+dev.off()
