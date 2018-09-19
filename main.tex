@@ -30,7 +30,6 @@
 % adapting dois to follow APA6
 \renewcommand{\doiprefix}{}
 \newcommand{\doi}[1]{\href{https://doi.org/#1}{https://doi.org/#1}}
-%\newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{http://dx.doi.org/#1}}
 
 % new command for Donny's comments
 \newcommand{\DWcomment}[2][inline]{\todo[author=DW, color=red!20, #1]{#2}}
@@ -53,7 +52,7 @@
 
 \keywords{Bayes, Bayesian statistics, confidence interval, credible interval}
 
-\authornote{Correspondence concerning this article should be addressed to Ladislas Nalborczyk, Laboratoire de Psychologie et Neurocognition, Univ. Grenoble Alpes, 1251 avenue centrale, 38058 Grenoble Cedex 9, France. E-mail: \href{mailto:ladislas.nalborczyk@gmail.com}{\nolinkurl{ladislas.nalborczyk@gmail.com}}.}
+\authornote{Correspondence concerning this article should be addressed to Ladislas Nalborczyk, Laboratoire de Psychologie et Neurocognition, Univ. Grenoble Alpes, 1251 avenue centrale, 38058 Grenoble Cedex 9, France. E-mail: \href{mailto:ladislas.nalborczyk@univ-grenoble-alpes.fr}{\nolinkurl{ladislas.nalborczyk@univ-grenoble-alpes.fr}}.}
 
 \begin{document}
 
@@ -102,29 +101,34 @@ $$ p(hypothesis|data) \propto p(data|hypothesis) \times p(hypothesis) $$
 
 In other words, the probability of some hypothesis (e.g., that the effect is exactly equals to 0) is proportional to the product of its prior probability and the "probability" of the data, \textit{given} this hypothesis (i.e., "how strongly" the data are implied by this hypothesis). Noteworthy here is that the posterior probability can be interpreted as a \textit{conditional} probability, representing the probability of the hypothesis, \textit{given} the data \textit{and} the prior probabilities.
 
- This highlights a first undesirable consequence of \cite{albers_credible_2018}'s proposal. Using confidence intervals (or credible intervals with flat priors) to make probability statements can lead to nonsensical situations. For instance, let's say you're fitting a simple linear regression model to estimate the average reaction time in some cognitive task\footnote{Which is given by the intercept of the model, if no predictor is included, or if these predictors are centred.}. Using a confidence interval to make a probability statement (under the pretence that it is numerically similar to a credible interval) is akin to implicitly assuming a uniform prior over the reals (i.e., on the $-\infty$ to $\infty$ range). It means assuming that every value between $-\infty$ and $\infty$ are equally plausible, including negative values. This obviously does not make sense when it comes of reaction times, proportions, scales scores, and most physical measurements (e.g., weight, height).
+ This highlights a first undesirable consequence of \cite{albers_credible_2018}'s proposal. Using confidence intervals (or credible intervals with flat priors) to make probability statements can lead to nonsensical situations. For instance, let's say you're fitting a simple linear regression model to estimate the average reaction time in some cognitive task\footnote{Which is given by the intercept of the model, if no predictor is included, or if these predictors are centred.}. Using a confidence interval to make a probability statement (under the pretence that it is numerically similar to a credible interval) is akin to implicitly assuming a uniform prior over the reals. It means assuming that every value between $-\infty$ and $\infty$ are equally plausible, including negative values. This obviously does not make sense when we are dealing with reaction times, proportions, scales scores, and most physical measurements (e.g., weight, height).
+ 
+ Further, there are several instances in which numerically equivalent intervals could not reasonably be considered to reflect the most probable parameter values, but could make sense with a frequentist interpretation. That is, both Bayesian and frequentist intervals could have nominal coverage probabilities, yet even Bayesian intervals might not make sense when interpreting the posterior probabilistically. To make this point, we use a recent example from a registered replication report \citep{verschuere_registered_2018}. The original effect was reported as $d$ = - 1.45 95\% [-2.61, -0.29] \citep{mazar_dishonesty_2008}. If we were to follow the argument of \cite{albers_credible_2018}, we could conclude there is a 50\% chance the effect is greater than 1.45. While this statement would be mathematically correct for the Bayesian estimate \citep{gelman_bayesian_2013}, this does not mean it accurately reflects our beliefs after conditioning on the data and fitted model. Indeed, based on the priming literature, it would be absurd to make such a probability statement. On the other hand, we could envision such a wide interval (frequentist or Bayesian) covering the population value 95\% of the time. 
+ 
+ With these examples, it is clear that interpretive exchangeability is not a given, as suggested by \cite{albers_credible_2018}, and that Bayesian interpretations remain conditional on the data and model (including the prior distributions). As such, in the case of non-informative priors, the posterior distributions are conditioned on what could be considered nonsense.
+ 
+%  Indeed, we agree with cite gelman in that "A naive student of Bayesian inference might claim that because all inference is
+% conditional on the observed data, it makes no difference how those data were collected...[the] definition of ‘the observed data’ should include information on how the
+% observed values arose, and in many situations such information has a direct bearing on
+% how these values should be interpreted." When conditioning on nonsense, for example obs
 
 \subsection{On the wrong use of credible intervals}
 
-While it is legitimate to use confidence intervals as tests (these can be considered as regions of significance), credible intervals cannot be used to reject a specific value. As explained in \cite{morey_fallacy_2015}, testing a specific value of interest requires that this specific value is assigned a non-zero probability a priori. Using credible intervals as a way of rejecting a null value would be similar to doing NHST, without controlling error rates (which is usually not desirable).
+While it is legitimate to use confidence intervals as tests (these can be considered as regions of significance), credible intervals cannot be used to reject a specific value. As explained in \cite{morey_fallacy_2015}, testing a specific value of interest (in a Bayesian framework) requires that this specific value is assigned a non-zero probability a priori. Using credible intervals as a way of rejecting a null value would be similar to doing NHST, without controlling error rates (which is usually not desirable).
 
-For this reason, we feel that every proposal going in the direction of more fuzziness in the distinction between different kind of intervals is misleading and should be rejected. To put it more clearly (and as it will become clear by the end of the current paper), using a confidence interval as a credible interval or using a credible interval as a confidence interval is "simply wrong" (Berger, 2006, quoted in \citealp{morey_fallacy_2015}).
+For this reason, we feel that every proposal going in the direction of more fuzziness in the distinction between different kinds of intervals is misleading and should be rejected. To put it more clearly (and as it will become clear by the end of the current paper), using a confidence interval as a credible interval or using a credible interval as a confidence interval is "simply wrong" (\citealp{berger_bayes_2006}, quoted in \citealp{morey_fallacy_2015}).
 
 \subsection{Risks of conceptual overfitting}
 
 It is usually not enough for two entities to have the same numerical values to conclude that we can interpret them the same way. It is even less sufficient to allow for the conclusion that they have the same characteristics. As an analogy, we discuss below a comparison of the concepts of mass and weight.
 
-Both measures can sometimes (under particular conditions of gravitational acceleration) give similar numerical estimations of a physical phenomenon. However, even in this situation, they do have very different meanings.
-
-Mass is a measure of the amount of matter an object is made up of (that we can express in kilograms), while weight refers to the force exerted on an object by gravity (expressed in newtons). The relation between weight ($W$), mass ($M$) and gravitational acceleration ($G$) is given by the following equation:
+Both measures can sometimes (under particular conditions of gravitational acceleration) give similar numerical estimations of a physical phenomenon. However, even in this situation, they do have very different meanings. Mass is a measure of the amount of matter an object is made up of (that we can express in kilograms), while weight refers to the force exerted on an object by gravity (expressed in newtons). The relation between weight ($W$), mass ($M$) and gravitational acceleration ($G$) is given by the following equation:
 
 $$ W = M \times G $$
 
-As an example, the weight of an object of 100kgs on Earth is approximately equals to $100 \times 9.8 = 980 \text{N}$. However, the weight of an object of 100kgs on the Moon is approximately equals to $100 \times 1.622 = 162.2\text{N}$.
+As an example, the weight of an object of 100kg on Earth is approximately equals to $100 \times 9.8 = 980 \text{N}$. However, the weight of an object of 100kg on the Moon is approximately equals to $100 \times 1.622 = 162.2\text{N}$.
 
-Let's now consider an environment $E$ in which $G = 1$. In this environment, $W$ is equals to $M$ and a pragmatical agent would conclude that both concepts are identical (i.e., they refer to the same abstract meaning), because they seem to describe a similar aspect of the world.
-
-However, this numerical equivalence under restricted conditions does not warrant ontological equivalence (i.e., it's not because two things have the same numerical value in very specific situations that they \textit{are} the same thing, or that they will have the same numerical value in other situations). In other words, using mass as a proxy for weight would lead to identical numerical estimates in a very limited range of situations (actually in precisely one situation, i.e., when $G = 1$), but would lead to different numerical estimations in all the other situations (i.e., the situations in which $G$ differs from exactly 1). To put it simply, the belief that $W = M$ would lead to erroneous predictions in every situation except the one where this belief was formed (a concept also known as overfitting).
+Let's now consider an environment $E$ in which $G = 1$. In this environment, $W$ is equals to $M$ and a pragmatical agent would conclude that both concepts are identical (i.e., they refer to the same abstract meaning), because they seem to describe a similar aspect of the world. However, this numerical equivalence under restricted conditions does not warrant ontological equivalence (i.e., it's not because two things have the same numerical value in very specific situations that they \textit{are} the same thing, or that they will have the same numerical value in other situations). In other words, using mass as a proxy for weight would lead to identical numerical estimates in a very limited range of situations (actually in precisely one situation, i.e., when $G = 1$), but would lead to different numerical estimations in all the other situations (i.e., the situations in which $G$ differs from exactly 1). To put it simply, the belief that $W = M$ would lead to erroneous predictions in every situation except the one where this belief was formed (a concept also known as overfitting).
 
 In a similar way, a frequentist confidence interval carries information about the hypothetical sampling distribution of the statistics under study (e.g., the mean), while a Bayesian credible interval is a way of summarising the posterior distribution. These are two very different things, that can, occasionally, happen to be numerically equivalent.
 
@@ -134,9 +138,7 @@ As discussed previously, \cite{albers_credible_2018} focused on very simplistic 
 
 \cite{albers_credible_2018} write: "In the present paper, we have demonstrated by means of various examples that confidence intervals and credible intervals, in various practical situations, are very similar and will lead to the same conclusions for many practical purposes when relatively uninformative priors are used".
 
-Contrary to what the authors postulate, differences between confidence intervals and credible intervals are observable in an incredible large variety of situations (actually, all but one). For instance (but non exhaustively), i) when samples are small, ii) when the space of the outcome is multi-modal or non-continuous, iii) when the range of data is restricted, or iv) when the prior is at least weakly informative.
-
-Combining these four possibilities, we argue that confidence intervals and credible intervals actually almost never give similar results (we give an example of discrepancies in the next section). Additionally, and as we previously demonstrated, numerical estimates can be similar, but it does not entail that the conclusion we can draw from it (i.e., the inference being made) should be similar.
+Contrary to what the authors postulate, differences between confidence intervals and credible intervals are observable in an incredible large variety of situations (actually, all but one). For instance (but non exhaustively), i) when samples are small, ii) when the space of the outcome is multi-modal or non-continuous, iii) when the range of data is restricted, or iv) when the prior is at least weakly informative. Combining these four possibilities, we argue that confidence intervals and credible intervals actually almost never give similar results (we give an example of discrepancies in the next section). Additionally, and as we previously demonstrated, numerical estimates can be similar, but it does not entail that the conclusion we can draw from it (i.e., the inference being made) should be similar.
 
 %\subsection{Drawbacks of extreme pragmatism}
 
@@ -151,15 +153,15 @@ Combining these four possibilities, we argue that confidence intervals and credi
 In Figure \ref{fig:coverage}, we present some simulation results showing that Bayesian credible intervals (obtained with weakly informative priors) do have the same properties as frequentist confidence intervals in the case of a simple regression model. Indeed, on repeated sampling, X\% of the constructed intervals will contain the population value of $\theta$ (as expressed by the coverage proportion displayed in Figure \ref{fig:coverage}).
 
 \begin{figure}[H]
-  \caption{Coverage properties of Bayesian credible intervals when using weakly informative priors. Blue vertical credible intervals represent intervals that "missed" the population value of the parameter (whose value is represented by the horizontal dashed line), while gray intervals represent intervals that contained the population value.}
+  \caption{Coverage properties of Bayesian credible intervals when using weakly informative priors. Blue vertical credible intervals represent intervals that "missed" the population value of the parameter (whose value is represented by the horizontal dashed line), while grey intervals represent intervals that contained the population value.}
   \centering
   \includegraphics[width=0.8\textwidth]{coverage1.png}
   \label{fig:coverage}
 \end{figure}
 
-Bayesian credible intervals with non-informative or weakly informative priors do have the same frequentist characteristics as confidence intervals, but also allow for conditional probability statements (e.g., given the prior and the information contained in the data, we can say that there is a X\% probability that the population value of $\theta$ lies in the interval)\footnote{Though, as we discussed earlier, this probability statement, while valid, makes little sense knowing that it is conditional on all possible values.}.
+Bayesian credible intervals with non-informative or weakly informative priors may have the same frequentist characteristics as confidence intervals, but also allow for conditional probability statements (e.g., given the prior and the information contained in the data, we can say that there is a X\% probability that the population value of $\theta$ lies in the interval)\footnote{Though, as we discussed earlier, this probability statement, while valid, makes little sense knowing that it is conditional on all possible values being equally likely.}.
 
-Therefore, in simple situations, the principle of parsimony would lead to use and report the most inclusive (general) statistics. In contrast to what \cite{albers_credible_2018} advocate, we thus suggest that the researcher interested in the Bayesian interpretation should use and report Bayesian statistics along with sensitivity analyses, with both non-informative, weakly informative and informative priors.
+Therefore, in simple situations, the principle of parsimony would lead to use and report the most inclusive (general) statistics. In contrast to what \cite{albers_credible_2018} advocate, we thus suggest that the researcher interested in the Bayesian interpretation should use and report Bayesian statistics along with sensitivity analyses, with both non-informative, weakly informative and informative priors (whose information might come from subject matter knowledge).
 
 \subsubsection{What about more complex models ?}
 
@@ -176,7 +178,7 @@ The effect sizes to be combined in meta-analyses are often found to be more vari
 
 As shown in Figure \ref{fig:coverage2}, the coverage property of confidence intervals computed with \cite{viechtbauer_confidence_2007}'s method is close to the nominal 95\% value. However, the credible intervals (wider than the confidence intervals) appear to contain the population value of $\tau$ in all 1000 simulations but three, resulting in a coverage proportion close to 1.
 
-Thus, in contrast to what \cite{albers_credible_2018} claimed, it appears that even when using very weakly informative priors (we used $\tau \sim \mathrm{HalfCauchy}(1000)$), the numerical boundaries as well as the coverage properties of confidence intervals and credible intervals can differ considerably. More generally, we feel that using simplistic examples to make general claims is highly problematic in that there is no guarantee that this generalises well to more complex models.
+Thus, in contrast to what \cite{albers_credible_2018} claimed, it appears that even when using non-informative priors (we used $\tau \sim \mathrm{HalfCauchy}(1000)$), the numerical boundaries as well as the coverage properties of confidence intervals and credible intervals can differ considerably. More generally, we feel that using simplistic examples to make general claims is highly problematic in that there is no guarantee that this generalises well to more complex models.
 
 In the previous sections, we discussed why we think the logic of the argument presented in \cite{albers_credible_2018} can be misleading. In the following, we suggest an alternative to pragmatism which does not preclude statistical literacy.
 
@@ -186,9 +188,9 @@ In the previous sections, we discussed why we think the logic of the argument pr
 
 \cite{albers_credible_2018} write: "By recognizing the near-equivalence between Bayesian and frequentist estimation intervals in ‘regular cases’, one can benefit from both worlds by incorporating both types of analysis in their study, which will lead to additional insights."
 
-Confidence intervals can sometimes (i.e., under specific conditions) be defined as a particular case of credible intervals for which priors are non-informative. Thus, one could ask, in consideration of the parsimony principle, why reporting redundant statistics ? Would not it be easier to use the more general and flexible case ? The parsimonious stance that we adopt here lead to the conclusion that the researcher interested in one specific interpretation should report the statistics that corresponds to this goal\footnote{Obviously, it is perfectly legitimate to be interested in several goals, but these goals should be clearly stated as such, and pursued using appropriate tools.}. If a researcher is interested in the sampling distribution of the statistics under study (or in reaching a nominal coverage proportion), s$\cdot$he should report confidence intervals. If s$\cdot$he is rather interested in making conditional probability statements from the data, then s$\cdot$he should report credible intervals.
+Confidence intervals can sometimes (i.e., under specific conditions) be identified with a special case of credible intervals for which priors are non-informative. Thus, one could ask, in consideration of the parsimony principle, why reporting redundant statistics? Would not it be easier to use the more general and flexible case? The parsimonious stance that we adopt here lead to the conclusion that the researcher interested in one specific interpretation should report the statistics that corresponds to this goal\footnote{Obviously, it is perfectly legitimate to be interested in several goals, but these goals should be clearly stated as such, and pursued using appropriate tools.}. If a researcher is interested in the sampling distribution of the statistics under study (or in reaching a nominal coverage proportion), s$\cdot$he should report confidence intervals. If s$\cdot$he is rather interested in making conditional probability statements from the data, then s$\cdot$he should report credible intervals (or ideally, the full posterior distribution).
 
-\subsection{A short note on the frequentist properties of Bayesian procedures}
+\subsection{A brief note on the frequentist properties of Bayesian procedures}
 
 \cite{albers_credible_2018} quote \cite{bayarri_interplay_2004} that wrote: "Statisticians should readily use both Bayesian and frequentist ideas".
 
@@ -198,23 +200,21 @@ We could not agree more with this statement. In addition, we recognise that both
 
 Given the limitations of the pragmatic perspective offered by \cite{albers_credible_2018} and the potentially dangerous consequences of the heuristic they argued for, we rather suggest to use parsimony as a guiding principle in deciding which statistics to use and to report.
 
-In order to warrant the Bayesian interpretation of frequentist confidence intervals, we would recommend each confidence interval to be accompanied by a Bayesian credible interval (and reciprocally). However, reporting credible intervals aside from confidence intervals in order to be sure that the confidence interval can be interpreted as a credible interval (or the reciprocal) makes little sense to us, as it would lead to reporting redundant intervals. For the sake of parsimony, we therefore recommend that a researcher interested in the Bayesian interpretation of an interval simply reports credible intervals along with sensitivity analyses (or that a researcher interested in the coverage properties of confidence intervals simply reports confidence intervals). In brief, we argue for ecumenism and we think pragmatism should not be a substitute for statistical literacy. 
+In order to warrant the Bayesian interpretation of frequentist confidence intervals, each confidence interval should be accompanied by a Bayesian credible interval (and reciprocally). However, reporting credible intervals aside from confidence intervals in order to be sure that the confidence interval can be interpreted as a credible interval (or the reciprocal) makes little sense to us, as it would lead to reporting redundant intervals (when they are identical). For the sake of parsimony, we therefore recommend that a researcher interested in the Bayesian interpretation of an interval simply reports credible intervals along with sensitivity analyses (or that a researcher interested in the coverage properties of confidence intervals simply reports confidence intervals). In brief, we argue for ecumenism and we think pragmatism should not be a substitute for statistical literacy. 
 
 As \cite{hoekstra_improving_2018}, we believe that "the more pragmatic approach in which philosophically unsound interpretations of CIs are permitted and even endorsed is unhelpful, and should be replaced by a more principled one. If students are to learn a certain statistical technique, expecting from statistics teachers to guard them against quick-and-dirty versions seems very reasonable indeed".
 
 \section{Supplementary materials}
 
-Reproducible code and figures are available at: \href{https://github.com/lnalborczyk/pragmatism_commentary}{\nolinkurl{https://github.com/lnalborczyk/pragmatism_commentary}}.
+Reproducible code and figures are available at: \href{https://osf.io/nmp6x/}{\nolinkurl{https://osf.io/nmp6x/}}.
 
 \section{Acknowledgements}
 
-We thank ... for helpful comments on a previous version of this manuscript.
+We thank Antonio Schettino and Ivan Grahek for helpful comments on a previous version of this manuscript.
 
 \bibliography{parsimony}
 
 %\setlength{\parindent}{-0.5in}
 %\setlength{\leftskip}{0.5in}
-
-%Viechtbauer, W. (2010). Conducting meta-analyses in R with the metafor package. Journal of Statistical Software, 36(3), 1-48. URL: http://www.jstatsoft.org/v36/i03/
   
 \end{document}
