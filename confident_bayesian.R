@@ -1,6 +1,6 @@
 ##############################################################################
 # R code accompanying Nalborczyk, Bürkner, & Williams (2018)
-# OSF projet: ...
+# OSF projet: https://osf.io/nmp6x/
 # Contact: ladislas.nalborczyk@gmail.com
 # Last update: September 13, 2018
 #############################################################
