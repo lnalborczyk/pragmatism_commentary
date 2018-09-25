@@ -2,7 +2,7 @@
 # R code accompanying Nalborczyk, Bürkner, & Williams (2018)
 # OSF projet: https://osf.io/nmp6x/
 # Contact: ladislas.nalborczyk@gmail.com
-# Last update: September 13, 2018
+# Last update: September 25, 2018
 #############################################################
 
 #####################################################
@@ -13,14 +13,14 @@ library(tidyverse)
 library(brms)
 
 set.seed(666) # setting the seed for reproducibility
-nsims <- 1e3 # number of simulations
+nsims <- 1e4 # number of simulations
 
 lower <- numeric()
 upper <- numeric()
 
 for(i in 1:nsims) {
     
-    y <- data.frame(y = rnorm(1e2, mean = 100, sd = 15) )
+    y <- data.frame(y = rnorm(n = 1e2, mean = 0, sd = 10) )
     
     if(i == 1) {
         
@@ -37,25 +37,38 @@ for(i in 1:nsims) {
     lower[i] <- intervals[1]
     upper[i] <- intervals[2]
     
+    print(i)
+    
 }
 
-sim <- data.frame(lower = lower, upper = upper, id = 1:length(lower) ) %>%
-    mutate(group = ifelse(100 > lower & 100 < upper, 1, 0) )
+sim <- 
+    data.frame(lower = lower, upper = upper, id = 1:length(lower) ) %>%
+    mutate(group = ifelse(0 > lower & 0 < upper, 1, 0) )
 
-png(filename = "coverage1.png", width = 1500, height = 1000, res = 200)
+png(filename = "coverage1.png", width = 4500, height = 3000, res = 300)
 
 sim %>%
+    # selecting a subset of observations for readability
+    # sample_frac(0.5) %>%
     ggplot(aes(x = id, colour = as.factor(group), size = as.factor(group) ) ) +
-    geom_hline(yintercept = 100, lty = 2, alpha = 0.5) +
+    # representing the population value of the intercept
+    geom_hline(yintercept = 0, lty = 2, alpha = 0.5) +
+    # plotting the intervals
     geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
-    scale_y_continuous(limits = c(80, 120) ) +
-    scale_x_continuous(breaks = c(seq(0, nsims, nsims / 10) ) ) +
+    # ylim
+    scale_y_continuous(limits = c(-8, 8) ) +
+    # x-axis ticks
+    scale_x_continuous(limits = c(0, 100), breaks = c(seq(0, 100, 10) ) ) +
+    # scale_x_continuous(breaks = c(seq(0, nsims, nsims / 10) ) ) +
+    # defining colors
     scale_color_manual(values = c("steelblue", "gray80"), guide = FALSE) +
-    scale_size_manual(values = c(0.5, 0.25), guide = FALSE) +
+    # and width of the intervals
+    scale_size_manual(values = c(1, 0.75), guide = FALSE) +
     ylab("Estimate") +
     xlab("Simulation number") +
-    theme_minimal(base_size = 12) +
-    ggtitle(paste0("Coverage = ", mean(sim$group) ) )
+    theme_minimal(base_size = 20) +
+    # representing the coverage proportion
+    ggtitle(paste0("Coverage = ", round(mean(sim$group), 3) ) )
 
 dev.off()
 
@@ -68,7 +81,7 @@ library(metafor)
 
 set.seed(666) # setting the seed for reproducibility
 
-nsims <- 1e3 # number of simulations
+nsims <- 1e4 # number of simulations
 tau <- 0.1 # population value of tau
 
 # initialising an empty dataframe
@@ -109,7 +122,7 @@ for(i in 1:nsims) {
     
 }
 
-png(filename = "coverage2.png", width = 1500, height = 1000, res = 200)
+png(filename = "coverage2.png", width = 4500, height = 3000, res = 300)
 
 res %>%
     gather(interval, value) %>%
@@ -121,14 +134,23 @@ res %>%
     # computing coverage
     group_by(type) %>%
     mutate(coverage = mean(group) ) %>%
+    # selecting a subset of observations for readability
+    # sample_frac(0.1) %>%
     # plotting
     ggplot(aes(x = id, colour = as.factor(group), size = as.factor(group) ) ) +
+    # plotting the population value of tau
     geom_hline(yintercept = tau, lty = 2, alpha = 0.5) +
     geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
-    scale_y_continuous(limits = c(0, 1) ) +
-    scale_x_continuous(breaks = c(seq(0, nsims, nsims / 10) ) ) +
+    # y-axis
+    scale_y_continuous(limits = c(0, 0.75) ) +
+    # x-axis ticks
+    scale_x_continuous(limits = c(0, 100), breaks = c(seq(0, 100, 10) ) ) +
+    # scale_x_continuous(breaks = c(seq(0, nsims, nsims / 10) ) ) +
+    # colors of intervals
     scale_color_manual(values = c("steelblue", "gray80"), guide = FALSE) +
-    scale_size_manual(values = c(0.5, 0.25), guide = FALSE) +
+    # width of intervals
+    scale_size_manual(values = c(1, 0.75), guide = FALSE) +
+    # facetting by type of interval
     facet_wrap(
         ~type, ncol = 1, scales = "free",
         labeller = as_labeller(c(
@@ -138,11 +160,11 @@ res %>%
         ) +
     # adding coverage proportion
     geom_label(
-        aes(x = 100, y = 0.75, label = paste0("Coverage = ", round(coverage, 3) ) ),
-        inherit.aes = FALSE
+        aes(x = 90, y = 0.7, label = paste0("Coverage = ", round(coverage, 3) ) ),
+        inherit.aes = FALSE, size = 6
         ) +
     ylab("Estimate") +
     xlab("Simulation number") +
-    theme_minimal(base_size = 12)
+    theme_minimal(base_size = 20)
 
 dev.off()

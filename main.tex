@@ -31,9 +31,6 @@
 \renewcommand{\doiprefix}{}
 \newcommand{\doi}[1]{\href{https://doi.org/#1}{https://doi.org/#1}}
 
-% new command for Donny's comments
-\newcommand{\DWcomment}[2][inline]{\todo[author=DW, color=red!20, #1]{#2}}
-
 % enabling line numbers
 \linenumbers
 
@@ -83,14 +80,6 @@ However, we argue that i) the situations presented in \cite{albers_credible_2018
 
 \section{Rebuttals}
 
-%\subsection{Restating Bayes theorem, a tautology}
-
-%From a broad perspective, outlining that confidence intervals are usually equivalent to credible intervals when using non-informative priors is akin to simply rephrasing Bayes theorem, which states that the posterior is proportional to the likelihood times the prior, that is:
-
-%$$ posterior \propto likelihood \times prior $$
-
-%From this theorem, we can deduce that if the prior is non-informative, then the posterior can be equated with the likelihood. It follows that frequentist estimates (who depends only on the likelihood) can be equated with Bayesian estimates (that are obtained from the posterior distribution) when uninformative priors are used. In other words, frequentist statistics can be conceived as a particular case of Bayesian statistics. Given that this conclusion is a strict deduction from Bayes theorem, we feel that rhetorical demonstrations and numerical simulations aiming at demonstrating this equality would add very little to the current state of knowledge.
-
 \subsection{Conditioning on nonsense}
 
 The debate between the frequentist and the Bayesian schools of inference has been firing for many decades and we do not wish to reiterate all the arguments here (we refer the interested reader to the introduction of \citealp{albers_credible_2018}).
@@ -101,9 +90,9 @@ $$ p(\theta|y) \propto p(y|\theta) \times p(\theta) $$
 
 In other words, the posterior probability of some parameter (or vector of parameters) $\theta$ is proportional to the product of its prior probability $p(\theta)$ and the likelihood $p(y|\theta)$. Noteworthy here is that the posterior probability $p(\theta|y)$ can be interpreted as a \textit{conditional} probability, \textit{given} the data \textit{and} the model (including the prior information).
 
- This highlights a first undesirable consequence of \cite{albers_credible_2018}'s proposal. Using confidence intervals (or credible intervals with flat priors) to make probability statements can lead to nonsensical situations. For instance, let's say you're fitting a simple linear regression model to estimate the average reaction time in some cognitive task\footnote{Which is given by the intercept of the model, if no predictor is included, or if these predictors are centred.}. Using a confidence interval to make a probability statement (under the pretence that it is numerically similar to a credible interval) is akin to implicitly assuming a uniform prior over the reals. It means assuming that every value between $-\infty$ and $\infty$ are equally plausible, including negative values. This obviously does not make sense when we are dealing with reaction times, proportions, scales scores, most physical measurements (e.g., weight, height), or anything else that has a restricted range of definition.
+ This highlights a first undesirable consequence of \cite{albers_credible_2018}'s proposal. Using confidence intervals (or credible intervals with flat priors) to make probability statements can lead to nonsensical situations. For instance, let's say you're fitting a simple linear regression model to estimate the average reaction time in some cognitive task\footnote{Which is given by the intercept of the model, if no predictor is included, or if these predictors have been contrast-coded.}. Using a confidence interval to make a probability statement (under the pretence that it is numerically similar to a credible interval) is akin to implicitly assuming a uniform prior over the reals. It means assuming that every value between $-\infty$ and $\infty$ are equally plausible, including negative values. This obviously does not make sense when we are dealing with reaction times, proportions, scales scores, most physical measurements (e.g., weight, height), or anything else that has a restricted range of definition.
  
- Further, there are examples where numerically equivalent intervals do not necessarily reflect the most probable parameter values (given all available information), but could still have valid frequentist properties. That is, while both Bayesian and frequentist intervals could have nominal coverage probabilities \citep{albers_credible_2018}, the additional requirement for (meaningful) probabilistic inference is compatibility with previous information. Here Bayesian probability is not inherently subjective. Rather, in addition to the data, the probabilities are also conditional on all assumptions including the prior distribution. To make this point, we use a recent example from a registered replication report \citep{verschuere_registered_2018}. The original effect was reported as $d$ = 1.45, 95\% [0.29, 2.61] \citep{mazar_dishonesty_2008}. Following the argument of \cite{albers_credible_2018}, we could state there is a 50\% chance the effect is greater than 1.45. Although this would be mathematically correct for the posterior distribution \citep{gelman_p_2013}, this does not mean it accurately reflects the most probable values. Indeed, based on the priming literature, it would be unreasonable to make such a probability statement. On the other hand, we could envision such a wide interval (Bayesian or frequentist) covering the population value 95\% of the time. Thus, interpretive exchangeability is not a given and can lead to misleading inferences when conditioning on nonsense.
+ Further, there are examples where numerically equivalent intervals do not necessarily reflect the most probable parameter values (given all available information), but could still have valid frequentist properties. That is, while both Bayesian and frequentist intervals could have nominal coverage probabilities \citep{albers_credible_2018}, the additional requirement for (meaningful) probabilistic inference is compatibility with previous information. Rather, in addition to the data, the probabilities are also conditional on all assumptions including the prior distribution. To make this point, we use a recent example from a registered replication report \citep{verschuere_registered_2018}. The original effect was reported as $d$ = 1.45, 95\% [0.29, 2.61] \citep{mazar_dishonesty_2008}. Following the argument of \cite{albers_credible_2018}, we could state there is a 50\% chance the effect is greater than 1.45. Although this would be mathematically correct for the posterior distribution \citep{gelman_p_2013}, this does not mean it accurately reflects the most probable values. Indeed, based on the priming literature, it would be unreasonable to make such a probability statement. On the other hand, we could envision such a wide interval (Bayesian or frequentist) covering the population value 95\% of the time. Thus, interpretive exchangeability is not a given and can lead to misleading inferences when conditioning on nonsense.
 
 \subsection{On the wrong use of credible intervals}
 
@@ -138,9 +127,7 @@ In Figure \ref{fig:coverage}, we present some simulation results showing that Ba
   \label{fig:coverage}
 \end{figure}
 
-Bayesian credible intervals with non-informative or weakly informative priors may have the same frequentist characteristics as confidence intervals, but also allow for conditional probability statements (e.g., given the prior and the information contained in the data, we can say that there is a X\% probability that the population value of $\theta$ lies in the interval)\footnote{Although, as we discussed earlier, this probability statement, while valid, makes little sense knowing that it is conditional on all possible values being equally likely a priori.}.
-
-Therefore, in simple situations, the principle of parsimony would lead to use and report the most inclusive (general) statistics. In contrast to what \cite{albers_credible_2018} advocate, we thus suggest that the researcher interested in the Bayesian interpretation should use and report Bayesian statistics along with sensitivity analyses, with non-informative, weakly informative and informative priors (whose information might come from subject matter knowledge).
+Bayesian credible intervals with non-informative or weakly informative priors may have the same frequentist characteristics as confidence intervals, but also allow for conditional probability statements (e.g., given the prior and the information contained in the data, we can say that there is a X\% probability that the population value of $\theta$ lies in the interval)\footnote{Although, as we discussed earlier, this probability statement, while valid, makes little sense knowing that it is conditional on all possible values being equally likely a priori.}. Therefore, in simple situations, the principle of parsimony would lead to use and report the most inclusive (general) statistics. In contrast to what \cite{albers_credible_2018} advocate, we thus suggest that the researcher interested in the Bayesian interpretation should use and report Bayesian credible intervals.
 
 \subsubsection{What about more complex models?}
 
@@ -165,12 +152,6 @@ Thus, in contrast to what \cite{albers_credible_2018} claimed, it appears that e
 
 Contrary to what the authors postulate, differences between confidence intervals and credible intervals are observable in an incredible large variety of situations (actually, all but one). For instance (but non exhaustively), i) when samples are small, ii) when the space of the outcome is multi-modal or non-continuous, iii) when the range of the outcome is restricted, or iv) when the prior is at least weakly informative. Combining these four possibilities, we argue that confidence intervals and credible intervals actually almost never give similar results. Moreover, as we previously demonstrated, numerical estimates can be similar, but it does not entail that the conclusion we can draw from it (i.e., the inference being made) should be similar.
 
-%\subsection{Drawbacks of extreme pragmatism}
-
-%In this section, we want to highlight what appears to us as a fallacious argument\footnote{We recognise that the fallacy comes from the imperfect correspondence between confidence intervals and credible intervals.}. As a reminder, \cite{albers_credible_2018} argue that because confidence intervals and credible intervals do sometimes have the same numerical values (and because when they do they have similar consequences on the inference being made), then, from a pragmatic perspective, they should be treated as \textit{equivalent}. Thus, we could use confidence intervals instead of (or in addition to) credible intervals.
-
-%This argument seems to be of the following form: "Because $A$ can sometimes be interpreted as $B$, then we should use $A$ instead of (or in addition to) $B$". Does it mean that if astrology sometimes gives the same results as personality tests, we should use astrology instead of (or in addition to) personality tests ?
-
 In the previous sections, we discussed why we think the logic of the argument presented in \cite{albers_credible_2018} can be misleading. In the following, we suggest an alternative to pragmatism which does not preclude statistical literacy.
 
 \section{An alternative to pragmatism}
@@ -191,7 +172,7 @@ We could not agree more with this statement. In addition, we recognise that both
 
 Given the limitations of the pragmatic perspective offered by \cite{albers_credible_2018} and the potentially harmful consequences of the heuristic they argued for, we rather suggest to use parsimony as a guiding principle in deciding which statistics to use and to report.
 
-In order to warrant the Bayesian interpretation of frequentist confidence intervals, each confidence interval should be accompanied by a Bayesian credible interval. However, reporting credible intervals aside from confidence intervals in order to be sure that the confidence interval can be interpreted as a credible interval makes little sense to us, as it would lead to reporting redundant intervals (when they are identical). For the sake of parsimony, we therefore recommend that a researcher interested in the Bayesian interpretation of an interval simply reports credible intervals along with sensitivity analyses (or that a researcher interested in the coverage properties of confidence intervals simply reports confidence intervals). In brief, we argue for ecumenism and we think pragmatism should not be a substitute for statistical literacy. 
+In order to warrant the Bayesian interpretation of frequentist confidence intervals, each confidence interval should be accompanied by a Bayesian credible interval. However, reporting credible intervals aside from confidence intervals in order to be sure that the confidence interval can be interpreted as a credible interval makes little sense to us, as we then could have just used the credible interval right away. For the sake of parsimony, we therefore recommend that a researcher interested in the Bayesian interpretation of an interval simply reports credible intervals (or that a researcher interested in the coverage properties of confidence intervals simply reports confidence intervals). In brief, we argue for ecumenism and we think pragmatism should not be a substitute for statistical literacy. 
 
 As \cite{hoekstra_improving_2018}, we believe that "the more pragmatic approach in which philosophically unsound interpretations of CIs are permitted and even endorsed is unhelpful, and should be replaced by a more principled one. If students are to learn a certain statistical technique, expecting from statistics teachers to guard them against quick-and-dirty versions seems very reasonable indeed".
 
@@ -213,7 +194,4 @@ We thank Antonio Schettino and Ivan Grahek for helpful comments on a previous ve
 
 \bibliography{parsimony}
 
-%\setlength{\parindent}{-0.5in}
-%\setlength{\leftskip}{0.5in}
-  
 \end{document}
